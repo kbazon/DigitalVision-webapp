@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="custom-page-background">
-    <q-header elevated>
+    <q-header elevated="">
       <q-toolbar class="custom-toolbar">
         <q-btn
           flat
@@ -15,7 +15,12 @@
           <img
             alt="DigitalVision logo"
             src="~assets/Untitled-1.png"
-            style="width: 200px; height: 109px; margin-left: -10px"
+            style="
+              width: 200px;
+              height: 109px;
+              margin-left: -10px;
+              margin-top: 10px;
+            "
           />
         </q-toolbar-title>
         <q-icon name="palette" size="40px" class="toolbar-icon" />
@@ -28,12 +33,41 @@
       bordered
       class="custom-drawer"
     >
-      <q-list class="q-mt-md">
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
+      <q-list>
+        <q-item to="/" clickable class="menu-item">
+          <q-item-section avatar>
+            <q-icon name="home" class="menu-icon" />
+          </q-item-section>
+          <q-item-section class="menu-title">Naslovnica</q-item-section>
+        </q-item>
+
+        <q-item to="/pretrazivanje" clickable class="menu-item">
+          <q-item-section avatar>
+            <q-icon name="search" class="menu-icon" />
+          </q-item-section>
+          <q-item-section class="menu-title">Pretraživanje</q-item-section>
+        </q-item>
+
+        <q-item to="/onama" clickable class="menu-item">
+          <q-item-section avatar>
+            <q-icon name="group" class="menu-icon" />
+          </q-item-section>
+          <q-item-section class="menu-title">O nama</q-item-section>
+        </q-item>
+
+        <q-item to="/profilkorisnika" clickable class="menu-item">
+          <q-item-section avatar>
+            <q-icon name="person" class="menu-icon" />
+          </q-item-section>
+          <q-item-section class="menu-title">Profil</q-item-section>
+        </q-item>
+
+        <q-item to="/kontakt" clickable class="menu-item">
+          <q-item-section avatar>
+            <q-icon name="mail" class="menu-icon" />
+          </q-item-section>
+          <q-item-section class="menu-title">Kontakt</q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -45,44 +79,10 @@
 
 <script setup>
 import { ref } from "vue";
-import EssentialLink from "components/EssentialLink.vue"; // Ensure this is correctly imported
 
 defineOptions({
   name: "MainLayout",
 });
-
-const linksList = [
-  {
-    title: "Naslovnica",
-    caption: "Naslovna stranica",
-    icon: "home",
-    link: "#/",
-  },
-  {
-    title: "Pretraživanje",
-    caption: "Pretraga digitalnih crteža",
-    icon: "search",
-    link: "#/pretrazivanje",
-  },
-  {
-    title: "O Nama",
-    caption: "Naša vizija i misija",
-    icon: "groups",
-    link: "#/onama",
-  },
-  {
-    title: "Profil",
-    caption: "Profil korisnika",
-    icon: "person",
-    link: "#/profilkorisnika",
-  },
-  {
-    title: "Kontak",
-    caption: "Kontakt",
-    icon: "mail",
-    link: "#/kontakt",
-  },
-];
 
 const leftDrawerOpen = ref(false);
 
@@ -96,14 +96,36 @@ function toggleLeftDrawer() {
   font-family: "Century Gothic", Arial, sans-serif;
   user-select: none;
 }
+
 .custom-page-background {
   background-color: #ffffff;
 }
+
 .toolbar-icon {
   margin-right: 20px;
   color: #4200ff;
 }
+
 .custom-toolbar {
-  height: 80px;
+  height: 100px;
+  background-color: #ffffff;
+}
+
+.menu-item {
+  font-family: "Century Gothic", Arial, sans-serif;
+  margin-top: 30px;
+  margin-bottom: -20px;
+  padding: 10px 50px;
+  user-select: none;
+}
+
+.menu-title {
+  font-size: 17px;
+  color: #cdcdcd;
+}
+
+.menu-icon {
+  color: #d6d6d6;
+  font-size: 26px;
 }
 </style>

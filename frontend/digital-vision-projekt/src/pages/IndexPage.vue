@@ -11,6 +11,10 @@
       otkriva nove dimenzije umjetničkog izražavanja.
       <p2 class="line2">Dobrodošli u svoje utočište digitalne umjetnosti.</p2>
     </p>
+    <q-btn label="Napravi galeriju" class="gallery-btn" to="/profilkorisnika" />
+    <div class="image-container">
+      <img src="~assets/pic3.jpg" alt="Digital Art" class="img-fluid" />
+    </div>
   </q-page>
 </template>
 
@@ -22,7 +26,7 @@ defineOptions({
 
 <style scoped>
 .title {
-  margin-top: 50px; /* prostor iznad naslova popularno */
+  margin-top: 40px; /* prostor iznad naslova popularno */
   margin-left: 60px; /* prostor s ljeva */
   font-size: 50px;
   font-weight: bold;
@@ -31,8 +35,9 @@ defineOptions({
   line-height: 1.3;
 }
 .highlight {
-  display: block; /* "Creativity" next line */
+  display: block;
   color: #4200ff;
+  user-select: none;
 }
 .title2 {
   margin-top: -30px; /* prostor iznad naslova */
@@ -49,11 +54,38 @@ defineOptions({
   margin-top: 10px;
   margin-left: 60px;
   margin-right: 600px;
+  user-select: none;
 }
 .line2 {
   font-family: "Century Gothic", Arial, sans-serif;
   line-height: 1.6;
   margin-top: 10px;
   display: block;
+  user-select: none;
+}
+.gallery-btn {
+  border-radius: 30px;
+  padding: 7px 20px;
+  margin-left: 60px;
+  margin-top: 15px;
+  background-color: #000000;
+  color: aliceblue;
+  font-family: "Century Gothic", Arial, sans-serif;
+  text-transform: none;
+  user-select: none;
+}
+.image-container {
+  position: center;
+  width: 37%;
+  margin-left: auto;
+  margin-top: -450px;
+  margin-right: 70px;
+  user-select: none;
+}
+
+.img-fluid {
+  width: 100%;
+  height: auto;
+  user-select: none;
 }
 </style>
