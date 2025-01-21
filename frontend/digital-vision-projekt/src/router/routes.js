@@ -13,12 +13,20 @@ const routes = [
         component: () => import("pages/AboutUs.vue"),
       },
       {
-        path: "/profilkorisnika",
-        component: () => import("pages/ProfilePage.vue"),
+        path: "/prijava",
+        component: () => import("src/pages/PrijavaPage.vue"),
+      },
+      {
+        path: "/reg",
+        component: () => import("src/pages/RegPage.vue"),
       },
       {
         path: "/kontakt",
         component: () => import("pages/ContactPage.vue"),
+      },
+      {
+        path: "/profil",
+        component: () => import("pages/profilPage.vue"),
       },
     ],
   },

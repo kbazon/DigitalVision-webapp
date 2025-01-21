@@ -9,12 +9,12 @@
           icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
-          color="black"
+          color="white"
         />
         <q-toolbar-title class="custom-toolbar-title">
           <img
             alt="DigitalVision logo"
-            src="~assets/Untitled-1.png"
+            src="~assets/Untitled-9.png"
             style="
               width: 200px;
               height: 109px;
@@ -27,12 +27,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      class="custom-drawer"
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above class="custom-drawer">
       <q-list>
         <q-item to="/" clickable class="menu-item">
           <q-item-section avatar>
@@ -54,12 +49,24 @@
           </q-item-section>
           <q-item-section class="menu-title">O nama</q-item-section>
         </q-item>
-
-        <q-item to="/profilkorisnika" clickable class="menu-item">
+        <q-item to="/profil" clickable class="menu-item">
           <q-item-section avatar>
             <q-icon name="person" class="menu-icon" />
           </q-item-section>
           <q-item-section class="menu-title">Profil</q-item-section>
+        </q-item>
+
+        <q-item to="/prijava" clickable class="menu-item">
+          <q-item-section avatar>
+            <q-icon name="login" class="menu-icon" />
+          </q-item-section>
+          <q-item-section class="menu-title">Prijava</q-item-section>
+        </q-item>
+        <q-item to="/reg" clickable class="menu-item">
+          <q-item-section avatar>
+            <q-icon name="input" class="menu-icon" />
+          </q-item-section>
+          <q-item-section class="menu-title">Registracija</q-item-section>
         </q-item>
 
         <q-item to="/kontakt" clickable class="menu-item">
@@ -99,6 +106,7 @@ function toggleLeftDrawer() {
 
 .custom-page-background {
   background-color: #ffffff;
+  user-select: none;
 }
 
 .toolbar-icon {
@@ -108,7 +116,8 @@ function toggleLeftDrawer() {
 
 .custom-toolbar {
   height: 100px;
-  background-color: #ffffff;
+  background-color: #000000;
+  user-select: none;
 }
 
 .menu-item {
@@ -125,7 +134,7 @@ function toggleLeftDrawer() {
 }
 
 .menu-icon {
-  color: #d6d6d6;
+  color: #d6d6d6 !important;
   font-size: 26px;
 }
 </style>
