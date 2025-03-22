@@ -111,6 +111,7 @@ app.post("/api/reg", (req, res) => {
       [firstName, lastName, email, password, artTypeValue],
       (err, results) => {
         if (err) {
+          console.error("Greška pri registraciji:", err); // Log the error
           res.send({
             success: false,
             message: "Greška prilikom registracije.",
@@ -173,18 +174,14 @@ app.post("/api/add-art", (req, res) => {
 
       const artistId = result[0].ID_Umjetnika;
 
-      //  id_Galerije nije naveden NULL
-      const galleryId = req.body.galleryId || null; // Ako nije poslan galleryId, postavi NULL
-
-      // id_Galerije je opcija
       const query = `
-        INSERT INTO Art (ID_Umjetnika, Naslov_Crteza, Opis_Crteza, slika, Datum_Objave, ID_Galerije)
-        VALUES (?, ?, ?, ?, NOW(), ?);
+        INSERT INTO Art (ID_Umjetnika, Naslov_Crteza, Opis_Crteza, slika, Datum_Objave)
+        VALUES (?, ?, ?, ?, NOW());
       `;
 
       connection.query(
         query,
-        [artistId, title, description, imageLink, galleryId],
+        [artistId, title, description, imageLink],
         (err, result) => {
           if (err) {
             console.error("Greška pri dodavanju crteža:", err);
@@ -196,7 +193,7 @@ app.post("/api/add-art", (req, res) => {
           res.status(200).json({
             success: true,
             message: "Crtež je uspješno dodan!",
-            newArt: { title, description, imageLink, artistId, galleryId },
+            newArt: { title, description, imageLink, artistId },
           });
         }
       );
