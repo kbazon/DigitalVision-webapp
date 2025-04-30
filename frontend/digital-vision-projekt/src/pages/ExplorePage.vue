@@ -20,18 +20,36 @@
         :key="index"
         class="image-container"
       >
-        <img :src="drawing.slika" class="image" />
+        <img
+          :src="drawing.slika"
+          class="image"
+          @click="openAddToFavoritesDialog(drawing)"
+        />
       </div>
     </div>
 
     <div v-else-if="!loading && searchQuery.length > 0" class="no-results">
       <p>Nema rezultata za uneseni pojam pretrage.</p>
     </div>
+
+    <!-- Add to Favorites Dialog -->
+    <q-dialog v-model="addToFavoritesDialog" persistent>
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Dodaj crtež u favorite</div>
+        </q-card-section>
+        <q-card-actions>
+          <q-btn label="Odustani" @click="closeAddToFavoritesDialog" />
+          <q-btn label="Dodaj u favorite" @click="addToFavorites" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
 import axios from "axios";
+import { Notify } from "quasar";
 
 export default {
   data() {
@@ -41,6 +59,8 @@ export default {
       searchByDescription: false,
       filteredDrawings: [],
       loading: false,
+      addToFavoritesDialog: false,
+      selectedDrawing: null, // Store the selected drawing for adding to favorites
       columns: [
         {
           name: "slika",
@@ -89,6 +109,53 @@ export default {
         this.filteredDrawings = [];
       } finally {
         this.loading = false;
+      }
+    },
+    openAddToFavoritesDialog(drawing) {
+      if (localStorage.getItem("userEmail")) {
+        this.selectedDrawing = drawing;
+        this.addToFavoritesDialog = true;
+      } else {
+        this.$router.push("/prijava"); // Redirect to login if the user is not logged in
+      }
+    },
+    closeAddToFavoritesDialog() {
+      this.addToFavoritesDialog = false;
+      this.selectedDrawing = null;
+    },
+    async addToFavorites() {
+      if (!this.selectedDrawing) return;
+
+      const email = localStorage.getItem("userEmail");
+      const drawingId = this.selectedDrawing.ID_Crteza;
+
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/add-to-favorites",
+          {
+            email,
+            drawingId,
+          }
+        );
+
+        if (response.data.success) {
+          Notify.create({
+            color: "green",
+            message: "Crtež je dodan u favorite!",
+            icon: "check",
+          });
+        } else {
+          Notify.create({
+            color: "red",
+            message: "Došlo je do greške pri dodavanju u favorite.",
+            icon: "error",
+          });
+        }
+
+        this.closeAddToFavoritesDialog();
+      } catch (error) {
+        console.error("Greška prilikom dodavanja u favorite:", error);
+        this.closeAddToFavoritesDialog();
       }
     },
   },

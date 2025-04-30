@@ -30,7 +30,38 @@
           <q-img :src="art.slika" :alt="art.Naslov_crteza" class="crtez" />
         </div>
       </div>
+
+      <h2>Vaši favoriti:</h2>
+      <div class="results-container">
+        <div class="nema" v-if="userFavorites.length === 0">Nema favorita.</div>
+        <div
+          v-for="favorite in userFavorites"
+          :key="favorite.ID_Favorita"
+          class="art-section"
+        >
+          <q-img
+            :src="favorite.slika"
+            class="crtez"
+            @click="openRemoveFavoriteDialog(favorite)"
+          />
+        </div>
+      </div>
     </div>
+    <!-- Remove from Favorites Dialog -->
+    <q-dialog v-model="removeFavoriteDialog" persistent>
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Ukloni crtež iz favorita</div>
+        </q-card-section>
+        <q-card-section>
+          <p>Jeste li sigurni da želite ukloniti ovaj crtež iz favorita?</p>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn label="Odustani" @click="closeRemoveFavoriteDialog" />
+          <q-btn label="Ukloni" color="red" @click="removeFromFavorites" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     <q-btn label="Odjava" class="odj" unelevated @click="logout" />
 
@@ -71,12 +102,16 @@
 
 <script>
 import axios from "axios";
+import { Notify } from "quasar";
 
 export default {
   data() {
     return {
       email: localStorage.getItem("userEmail") || "",
       userArt: [],
+      userFavorites: [], // Store favorites here
+      removeFavoriteDialog: false,
+      selectedFavoriteId: null,
       addArtDialog: false,
       newArt: {
         title: "",
@@ -109,7 +144,7 @@ export default {
           title: this.newArt.title,
           description: this.newArt.description,
           imageLink: this.newArt.imageLink,
-          email: this.email,
+          email: this.email, // Koristimo email umjesto userId
         });
 
         if (response.data.success) {
@@ -122,6 +157,64 @@ export default {
         console.error("Greška pri slanju crteža:", error);
       }
     },
+
+    async fetchUserFavorites() {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/user-favorites?email=${this.email}`
+        );
+        this.userFavorites = response.data;
+      } catch (error) {
+        console.error("Greška prilikom dohvaćanja favorita:", error);
+      }
+    },
+
+    openRemoveFavoriteDialog(favorite) {
+      this.selectedFavorite = favorite;
+      this.removeFavoriteDialog = true;
+    },
+
+    closeRemoveFavoriteDialog() {
+      this.removeFavoriteDialog = false;
+      this.selectedFavorite = null;
+    },
+
+    async removeFromFavorites() {
+      if (!this.selectedFavorite) return;
+
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/remove-from-favorites",
+          {
+            email: this.email,
+            drawingId: this.selectedFavorite.ID_Crteza,
+          }
+        );
+
+        if (response.data.success) {
+          this.userFavorites = this.userFavorites.filter(
+            (fav) => fav.ID_Crteza !== this.selectedFavorite.ID_Crteza
+          );
+
+          Notify.create({
+            color: "green",
+            message: "Crtež je uklonjen iz favorita.",
+            icon: "check",
+          });
+        } else {
+          Notify.create({
+            color: "red",
+            message: "Greška prilikom uklanjanja iz favorita.",
+            icon: "error",
+          });
+        }
+      } catch (error) {
+        console.error("Greška prilikom uklanjanja iz favorita:", error);
+      }
+
+      this.closeRemoveFavoriteDialog();
+    },
+
     logout() {
       localStorage.removeItem("userEmail");
       this.$router.push("/prijava");
@@ -129,6 +222,7 @@ export default {
   },
   mounted() {
     this.fetchUserArt();
+    this.fetchUserFavorites(); // Fetch user favorites
   },
 };
 </script>

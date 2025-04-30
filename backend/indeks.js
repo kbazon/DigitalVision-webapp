@@ -26,6 +26,135 @@ connection.connect((err) => {
   console.log("Connected to the database.");
 });
 
+//API FAVORITES
+app.post("/api/add-to-favorites", async (req, res) => {
+  const { email, drawingId } = req.body;
+  const dateAdded = new Date().toISOString().split("T")[0]; // Current date
+
+  if (!email || !drawingId) {
+    return res
+      .status(400)
+      .json({ success: false, error: "Email or Drawing ID is missing." });
+  }
+
+  // Get user ID from email
+  connection.query(
+    "SELECT ID_Umjetnika FROM Artist WHERE Mail_Umjetnika = ?",
+    [email],
+    (error, results) => {
+      if (error) {
+        console.error("Database error:", error);
+        return res
+          .status(500)
+          .json({ success: false, error: "Database error" });
+      }
+
+      if (results.length === 0) {
+        return res
+          .status(404)
+          .json({ success: false, error: "User not found." });
+      }
+
+      const userId = results[0].ID_Umjetnika;
+
+      // Insert into Favorites
+      connection.query(
+        "INSERT INTO Favorites (ID_Umjetnika, ID_Crteza, Datum_dodavanja) VALUES (?, ?, ?)",
+        [userId, drawingId, dateAdded],
+        (err) => {
+          if (err) {
+            console.error("Error adding to favorites:", err);
+            return res
+              .status(500)
+              .json({ success: false, error: "Failed to add to favorites." });
+          }
+
+          res.json({ success: true });
+        }
+      );
+    }
+  );
+});
+
+// API za favorite
+app.get("/api/user-favorites", (req, res) => {
+  const { email } = req.query; // Očekujemo email iz query parametra
+
+  if (!email) {
+    return res.status(400).json({ error: "Email is required" });
+  }
+
+  // Dohvaćamo favorite crteže prema emailu umjesto userId
+  connection.query(
+    `SELECT C.ID_Crteza, C.slika, C.Naslov_crteza 
+     FROM Favorites F
+     JOIN Art C ON F.ID_Crteza = C.ID_Crteza
+     JOIN Artist A ON F.ID_Umjetnika = A.ID_Umjetnika
+     WHERE A.Mail_Umjetnika = ?`,
+    [email],
+    (error, results) => {
+      if (error) {
+        console.error("Error fetching favorites:", error);
+        return res.status(500).json({ error: "Database error" });
+      }
+
+      res.json(results); // Vraćamo listu favorita
+    }
+  );
+});
+
+// API za brisanje iz favorita
+app.post("/api/remove-from-favorites", async (req, res) => {
+  const { email, drawingId } = req.body;
+
+  if (!email || !drawingId) {
+    return res
+      .status(400)
+      .json({ success: false, error: "Email or Drawing ID is missing." });
+  }
+
+  // Dohvaćamo ID korisnika na temelju emaila
+  connection.query(
+    "SELECT ID_Umjetnika FROM Artist WHERE Mail_Umjetnika = ?",
+    [email],
+    (error, results) => {
+      if (error) {
+        console.error("Database error:", error);
+        return res
+          .status(500)
+          .json({ success: false, error: "Database error" });
+      }
+
+      if (results.length === 0) {
+        return res
+          .status(404)
+          .json({ success: false, error: "User not found." });
+      }
+
+      const userId = results[0].ID_Umjetnika;
+
+      // Brisanje iz tablice Favorites
+      connection.query(
+        "DELETE FROM Favorites WHERE ID_Umjetnika = ? AND ID_Crteza = ?",
+        [userId, drawingId],
+        (err) => {
+          if (err) {
+            console.error("Error removing from favorites:", err);
+            return res
+              .status(500)
+              .json({
+                success: false,
+                error: "Failed to remove from favorites.",
+              });
+          }
+
+          res.json({ success: true });
+        }
+      );
+    }
+  );
+});
+
 // Endpoint for searching drawings
 app.get("/api/search", (req, res) => {
   const { query, byTitle, byDescription } = req.query;

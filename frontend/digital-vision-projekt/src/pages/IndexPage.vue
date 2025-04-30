@@ -1,21 +1,46 @@
 <template>
   <q-page>
-    <h1 class="title">
-      Showcase Your <span class="highlight">Creativity</span>
-    </h1>
-    <h2 class="title2">Vaša online umjetnička galerija</h2>
-    <p class="description">
-      Otkrijte svijet digitalne umjetnosti. Istražite živahnu kolekciju
-      digitalnih remek-djela, od zadivljujućih ilustracija do impresivnih
-      digitalnih crteža. Zaronite u carstvo kreativnosti, gdje svaki klik
-      otkriva nove dimenzije umjetničkog izražavanja.
-      <p2 class="line2">Dobrodošli u svoje utočište digitalne umjetnosti.</p2>
-    </p>
-    <q-btn label="Objavi crtež" class="explore-btn" to="/prijava" />
-    <q-btn label="Registracija" class="gallery-btn" to="/reg" />
-    <div class="image-container">
-      <img src="~assets/Pic11.png" alt="Digital Art" class="img-fluid" />
+    <div class="hero-container">
+      <div class="text-content">
+        <h1 class="title">
+          Showcase Your <span class="highlight">Creativity</span>
+        </h1>
+        <h2 class="title2">Vaša online umjetnička galerija</h2>
+        <p class="description">
+          Otkrijte svijet digitalne umjetnosti. Istražite živahnu kolekciju
+          digitalnih remek-djela, <br />od zadivljujućih ilustracija do
+          impresivnih digitalnih crteža. Zaronite u carstvo<br />
+          kreativnosti, gdje svaki klik otkriva nove dimenzije umjetničkog
+          izražavanja.
+        </p>
+        <p class="line2">
+          Dobrodošli u svoje utočište
+          <span class="highlight1">digitalne umjetnosti</span>.
+        </p>
+        <q-btn label="Objavi crtež" class="explore-btn" to="/prijava" />
+        <q-btn label="Registracija" class="gallery-btn" to="/reg" />
+        <div class="line3">
+          <p>
+            <span class="highlight1">Svaki korisnik</span> ima svoj profil gdje
+            može vidjeti svoje objavljene radove<br />
+            i listu omiljenih crteža. Aplikacija nudi jednostavno pretraživanje
+            crteža prema <br />naslovu i opisu te mogućnost dodavanja radova u
+            favorite.
+          </p>
+
+          <p>
+            Klikom na sliku unutar sekcije favorita otvara se prozor s upitom za
+            brisanje iz <br />omiljenih crteža. Korisnici mogu dodavati
+            <span class="highlight1">nove crteže</span>, odjaviti se sa svog
+            profila i upravljati svojim sadržajem na jednom mjestu.
+          </p>
+        </div>
+      </div>
+      <div class="image-container">
+        <img src="~assets/pic8.jpg" alt="Digital Art" class="img-fluid" />
+      </div>
     </div>
+
     <div class="tut"><h3>Tutorials</h3></div>
     <div class="content-container">
       <q-card-section class="pic1">
@@ -65,51 +90,83 @@ defineOptions({
 </script>
 
 <style scoped>
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Razmak između teksta i slike */
+  padding: 0;
+}
+
+.text-content {
+  flex: 1;
+  max-width: 50%; /* Tekst zauzima 50% prostora */
+}
+
+.image-container {
+  flex: 1;
+  text-align: right; /* Poravnanje slike na desno */
+}
+
+.img-fluid {
+  max-width: 95%; /* Smanji sliku da ne bude prevelika */
+  height: auto;
+  border-radius: 10px; /* Zaobljeni rubovi slike */
+}
+
 .title {
-  margin-top: 40px; /* prostor iznad naslova popularno */
-  margin-left: 60px; /* prostor s ljeva */
-  font-size: 50px;
+  margin-top: 30px;
+  margin-left: 60px;
+  font-size: 40px;
   font-weight: bold;
   font-family: "Century Gothic", Arial, sans-serif;
   user-select: none;
-  line-height: 1.3;
+  line-height: 1.1;
 }
 .highlight {
   display: block;
   color: #4200ff;
   user-select: none;
 }
+.highlight1 {
+  font-weight: bolder;
+  color: #000;
+}
 .title2 {
-  margin-top: -30px; /* prostor iznad naslova */
+  line-height: 0.2;
   margin-left: 60px;
-  font-size: 19px;
+  margin-bottom: 30px;
+  font-size: 17px;
   color: #000000;
-  font-weight: 500;
+  font-weight: bold;
   font-family: "Century Gothic", Arial, sans-serif;
   user-select: none;
 }
 .description {
-  font-size: 15px;
+  margin-left: 60px;
+  font-size: 13px;
   font-family: "Century Gothic", Arial, sans-serif;
   color: #000000;
-  line-height: 1.6;
-  margin-top: 10px;
-  margin-left: 60px;
-  margin-right: 600px;
   user-select: none;
 }
 .line2 {
+  margin-left: 60px;
+  margin-bottom: 30px;
   font-family: "Century Gothic", Arial, sans-serif;
-  line-height: 1.6;
-  margin-top: 10px;
-  display: block;
+  font-size: small;
   user-select: none;
+}
+.line3 {
+  margin-left: 60px;
+  font-family: "Century Gothic", Arial, sans-serif;
+  font-size: small;
+  margin-bottom: 70px;
 }
 .gallery-btn {
   border-radius: 30px;
-  padding: 7px 20px;
+  margin-bottom: 50px;
   margin-left: 30px;
-  margin-top: 20px;
+  font-size: 13px;
+  padding: 7px 20px;
   background-color: #000000;
   color: aliceblue;
   font-family: "Century Gothic", Arial, sans-serif;
@@ -117,31 +174,18 @@ defineOptions({
   user-select: none;
 }
 .explore-btn {
+  margin-bottom: 50px;
+  font-size: 13px;
+  margin-left: 60px;
   border-radius: 30px;
   padding: 7px 20px;
-  margin-left: 60px;
-  margin-top: 20px;
   background-color: #000000;
   color: aliceblue;
   font-family: "Century Gothic", Arial, sans-serif;
   text-transform: none;
   user-select: none;
 }
-.image-container {
-  position: relative;
-  align-items: flex-end;
-  width: 37%;
-  margin-left: auto;
-  margin-top: -380px;
-  margin-right: 80px;
-  user-select: none;
-}
 
-.img-fluid {
-  width: 100%;
-  height: auto;
-  user-select: none;
-}
 .pic1 {
   width: 80%;
   display: flex;
@@ -198,9 +242,6 @@ h3 {
 }
 .tut {
   background-color: #000000;
-  border-radius: 30px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 0px;
+  margin-top: -25px;
 }
 </style>
