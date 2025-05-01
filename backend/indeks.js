@@ -140,12 +140,10 @@ app.post("/api/remove-from-favorites", async (req, res) => {
         (err) => {
           if (err) {
             console.error("Error removing from favorites:", err);
-            return res
-              .status(500)
-              .json({
-                success: false,
-                error: "Failed to remove from favorites.",
-              });
+            return res.status(500).json({
+              success: false,
+              error: "Failed to remove from favorites.",
+            });
           }
 
           res.json({ success: true });

@@ -18,6 +18,17 @@
     <div class="button">
       <q-btn label="Pošalji" @click="sendEmail" class="b2" />
     </div>
+    <div>
+      <p class="upute">
+        Za sve dodatne informacije, preuzmite korisničke upute:
+      </p>
+      <a
+        class="upute2"
+        href="/docs/DigitalVision_Korisnicke_upute.pdf"
+        target="_blank"
+        >Preuzmite korisničke upute</a
+      >
+    </div>
   </q-page>
 </template>
 
@@ -60,7 +71,6 @@ const sendEmail = async () => {
   font-weight: 400;
   font-size: 15px;
   margin-left: 10px;
-
   color: white;
 }
 .q-pa-md {
@@ -93,5 +103,17 @@ const sendEmail = async () => {
   font-weight: 600;
   color: rgb(255, 255, 255);
   background-color: #4200ff;
+}
+.upute {
+  font-family: "Century Gothic", Arial, sans-serif;
+  color: #ffffff;
+  margin-top: 30px;
+  margin-left: 40px;
+}
+.upute2 {
+  font-family: "Century Gothic", Arial, sans-serif;
+  color: #4200ff;
+  margin-top: 30px;
+  margin-left: 40px;
 }
 </style>
