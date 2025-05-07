@@ -43,7 +43,7 @@
         </p>
       </div>
       <div class="image-container">
-        <img src="~assets/p8.png" alt="" class="pic16" />
+        <img src="~assets/pic11.png" alt="" class="pic16" />
       </div>
     </div>
     <div class="tut"><h6>Partneri</h6></div>
@@ -103,7 +103,6 @@
 }
 .section3-container {
   display: flex;
-  justify-content: space-between;
   margin-top: 20px;
   margin-bottom: 70px;
 }
@@ -176,10 +175,11 @@ h3 {
   line-height: 1.6;
 }
 .pic16 {
-  width: 120%;
-  max-width: 500px;
-  justify-content: flex-end;
-  margin-right: 10px;
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .pic12 {
