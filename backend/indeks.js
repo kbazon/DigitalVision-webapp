@@ -188,15 +188,19 @@ app.post("/api/login", (req, res) => {
   const { email, password } = req.body;
 
   const query = `
-  SELECT * 
-  FROM Artist 
-  WHERE Mail_Umjetnika = ? 
+  SELECT * FROM Artist
+  WHERE Mail_Umjetnika = ?
   AND Lozinka_Umjetnika = ?`;
+
   connection.query(query, [email, password], (err, results) => {
-    if (err || results.length === 0) {
-      res.send({ success: false, message: "Neispravni podaci" });
+    if (err) {
+      console.error("Database query error:", err);
+      // It's good practice to send a 500 status code for server errors
+      res.status(500).send({ success: false, message: "Server error" }); // Changed message for clarity
+    } else if (results.length === 0) {
+      res.status(200).send({ success: false, message: "Neispravni podaci" });
     } else {
-      res.send({ success: true, message: "Prijava uspješna" });
+      res.status(200).send({ success: true, message: "Prijava uspješna" });
     }
   });
 });
@@ -353,8 +357,13 @@ app.post("/send-email", async (req, res) => {
     console.error("Email sending failed", error),
       res.status(500).json({ message: "Email sending failed" });
   }
-}),
-  // Start server
+});
+// Export the app for testing
+module.exports = app;
+
+// Start server only if this file is run directly (not imported as a module)
+if (require.main === module) {
   app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
   });
+}

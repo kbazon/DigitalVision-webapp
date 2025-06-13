@@ -3,33 +3,30 @@ echo ---------------------------------------------
 echo DIGITALVISION - Instalacija sustava
 echo ---------------------------------------------
 
-:: trenutni direktorij kao korijenski
+:: Postavi trenutni direktorij kao korijenski
 cd /d %~dp0
+set ROOTDIR=%cd%\
+set FRONTEND_DIR=%ROOTDIR%frontend\digital-vision-projekt
+set BACKEND_DIR=%ROOTDIR%backend
 
-:: BACKEND - Instalacija API-a
-echo [1/5] Instalacija backend modula...
-cd backend
+:: [1/4] Backend - Instalacija i pokretanje
+echo [1/4] Instalacija backend modula...
+cd /d "%BACKEND_DIR%"
 call npm install
 
-:: FRONTEND - Instalacija Quasar aplikacije
-echo [2/5] Instalacija frontend modula...
-cd ../frontend/digital-vision-projekt
+echo [2/4] Pokretanje backend servera...
+start "" cmd /k "cd /d %BACKEND_DIR% && node indeks.js"
+
+:: [3/4] Frontend - Instalacija
+echo [3/4] Instalacija frontend modula...
+cd /d "%FRONTEND_DIR%"
 call npm install
 
-:: Buildanje Quasar SPA aplikacije
-echo [3/5] Buildanje frontend aplikacije...
-call quasar build
-
-:: Kopiranje buildane aplikacije (dist/spa) u ciljani folder
-echo [4/5] Kopiranje builda u produkcijski direktorij...
-xcopy /E /I /Y dist\spa C:\inetpub\wwwroot\DigitalVision
-
-:: Povratak u backend i pokretanje API servera
-echo [5/5] Pokretanje API servera...
-cd ../../../backend
-start /B node indeks.js
+:: [4/4] Pokretanje frontend aplikacije (quasar dev)
+echo [4/4] Pokretanje frontend aplikacije...
+start "" cmd /k "cd /d %FRONTEND_DIR% && quasar dev"
 
 echo ---------------------------------------------
-echo Instalacija završena. Sustav je pokrenut.
+echo Instalacija završena. Backend: http://localhost:3000 | Frontend: http://localhost:9000
 echo ---------------------------------------------
 pause
